@@ -101,6 +101,6 @@ export class ProjectsService {
     task.updatedAt = new Date().toISOString();
 
     await this.projectsRepo.saveProject(project);
-    return project;
+    return task;
   }
 }
