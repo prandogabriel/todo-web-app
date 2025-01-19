@@ -22,6 +22,8 @@ export class ProjectsRepository {
       Item: marshall({
         PK: `USER#${project.userId}`,
         SK: `PROJECT#${project.id}`,
+        id: project.id,
+        userId: project.userId,
         name: project.name,
         tasks: project.tasks ? project.tasks.map((task) => marshall(task)) : [],
         createdAt: project.createdAt,

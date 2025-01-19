@@ -20,7 +20,7 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(
+  async create(
     @Body() createProjectDto: Omit<CreateProjectDto, 'userId'>,
     @Req() req: AuthenticatedRequest,
   ) {
@@ -29,19 +29,19 @@ export class ProjectsController {
   }
 
   @Get()
-  findAll(@Req() req: AuthenticatedRequest) {
+  async findAll(@Req() req: AuthenticatedRequest) {
     const userId = req.user.sub;
     return this.projectsService.findAllByUser(userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+  async remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
     const userId = req.user.sub;
     return this.projectsService.remove(userId, id);
   }
 
   @Post(':id/tasks')
-  createTask(
+  async createTask(
     @Param('id') projectId: string,
     @Body('name') name: string,
     @Req() req: AuthenticatedRequest,
@@ -51,7 +51,7 @@ export class ProjectsController {
   }
 
   @Patch(':id')
-  updateProjectName(
+  async updateProjectName(
     @Param('id') id: string,
     @Body('name') name: string,
     @Req() req: AuthenticatedRequest,
@@ -61,7 +61,7 @@ export class ProjectsController {
   }
 
   @Delete(':projectId/tasks/:taskId')
-  removeTask(
+  async removeTask(
     @Param('projectId') projectId: string,
     @Param('taskId') taskId: string,
     @Req() req: AuthenticatedRequest,
@@ -75,7 +75,7 @@ export class ProjectsController {
   }
 
   @Patch(':projectId/tasks/:taskId/status')
-  updateTask(
+  async updateTask(
     @Param('projectId') projectId: string,
     @Param('taskId') taskId: string,
     @Req() req: AuthenticatedRequest,

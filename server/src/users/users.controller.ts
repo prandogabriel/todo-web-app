@@ -9,13 +9,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get('/profile')
   @UseGuards(JwtAuthGuard)
-  findOne(@Req() req: AuthenticatedRequest) {
+  async findOne(@Req() req: AuthenticatedRequest) {
     return this.usersService.findOneByEmail(req.user.email);
   }
 }

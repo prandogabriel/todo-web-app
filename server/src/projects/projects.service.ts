@@ -62,9 +62,8 @@ export class ProjectsService {
       updatedAt: new Date().toISOString(),
     };
     project.tasks.push(newTask);
-
     await this.projectsRepo.saveProject(project);
-    return project;
+    return newTask;
   }
 
   async removeTaskFromProject({
