@@ -34,12 +34,15 @@ export class ProjectsRepository {
   async getProjects(userId: string): Promise<Project[]> {
     const params = {
       TableName: this.tableName,
-      KeyConditionExpression: 'PK = :pk',
+      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
       ExpressionAttributeValues: marshall({
         ':pk': `USER#${userId}`,
+        ':sk': 'PROJECT#',
       }),
     };
+
     const result = await this.dynamoDBClient.send(new QueryCommand(params));
+
     return result.Items
       ? result.Items.map((item) => {
           const project = unmarshall(item) as Project;
@@ -52,6 +55,7 @@ export class ProjectsRepository {
         })
       : [];
   }
+
   // Retrieve a project by ID
   async getProject(userId: string, projectId: string): Promise<Project | null> {
     const params = {
