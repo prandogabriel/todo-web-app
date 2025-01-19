@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {  Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus } from 'lucide-react';
 import Task from './Task';
 import api from '../services/api';
 
 type TaskType = {
   id: string;
   name: string;
+  completed: boolean;
 };
 
 type ProjectType = {
@@ -27,14 +28,38 @@ export default function Project({ project, onDelete }: Props) {
     if (!newTaskName) return alert('Please provide a task name');
     try {
       const response = await api.post(`/projects/${project.id}/tasks`, { name: newTaskName });
-      setTasks([...tasks, response.data]); 
+      setTasks(response.data.tasks); // Atualiza todas as tarefas com o retorno do backend
       setNewTaskName('');
     } catch (error) {
       console.log(error);
       alert('Error adding task');
     }
   };
-  
+
+  const handleRemoveTask = async (taskId: string) => {
+    if (!window.confirm('Are you sure you want to delete this task?')) return;
+    try {
+      await api.delete(`/projects/${project.id}/tasks/${taskId}`);
+      setTasks((prev) => prev.filter((task) => task.id !== taskId)); // Remove a tarefa localmente
+    } catch (error) {
+      console.log(error);
+      alert('Error deleting task');
+    }
+  };
+
+  const handleToggleTaskStatus = async (taskId: string, completed: boolean) => {
+    try {
+      const response = await api.patch(`/projects/${project.id}/tasks/${taskId}/status`, { completed: !completed });
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === taskId ? { ...task, completed: response.data.completed } : task
+        )
+      ); // Atualiza o status da tarefa
+    } catch (error) {
+      console.log(error);
+      alert('Error updating task status');
+    }
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
@@ -69,9 +94,14 @@ export default function Project({ project, onDelete }: Props) {
 
       {/* Listar tarefas */}
       <ul className="mt-4 space-y-2">
-        {tasks.map((task) => {
-         return <Task key={task.id} task={task} />
-        })}
+        {tasks.map((task) => (
+          <Task
+            key={task.id}
+            task={task}
+            onRemove={() => handleRemoveTask(task.id)}
+            onToggleStatus={() => handleToggleTaskStatus(task.id, task.completed)}
+          />
+        ))}
       </ul>
     </div>
   );
