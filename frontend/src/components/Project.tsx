@@ -21,14 +21,14 @@ type Props = {
 };
 
 export default function Project({ project, onDelete }: Props) {
-  const [tasks, setTasks] = useState<TaskType[]>(project.tasks);
+  const [tasks, setTasks] = useState<TaskType[]>(project.tasks || []);
   const [newTaskName, setNewTaskName] = useState<string>('');
 
   const handleAddTask = async () => {
     if (!newTaskName) return alert('Please provide a task name');
     try {
       const response = await api.post(`/projects/${project.id}/tasks`, { name: newTaskName });
-      setTasks(response.data.tasks); // Atualiza todas as tarefas com o retorno do backend
+      setTasks((prev) => [...prev, response.data]);
       setNewTaskName('');
     } catch (error) {
       console.log(error);
@@ -36,29 +36,8 @@ export default function Project({ project, onDelete }: Props) {
     }
   };
 
-  const handleRemoveTask = async (taskId: string) => {
-    if (!window.confirm('Are you sure you want to delete this task?')) return;
-    try {
-      await api.delete(`/projects/${project.id}/tasks/${taskId}`);
-      setTasks((prev) => prev.filter((task) => task.id !== taskId)); // Remove a tarefa localmente
-    } catch (error) {
-      console.log(error);
-      alert('Error deleting task');
-    }
-  };
-
-  const handleToggleTaskStatus = async (taskId: string, completed: boolean) => {
-    try {
-      const response = await api.patch(`/projects/${project.id}/tasks/${taskId}/status`, { completed: !completed });
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === taskId ? { ...task, completed: response.data.completed } : task
-        )
-      ); // Atualiza o status da tarefa
-    } catch (error) {
-      console.log(error);
-      alert('Error updating task status');
-    }
+  const handleTaskRemoved = (taskId: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
   };
 
   return (
@@ -79,7 +58,7 @@ export default function Project({ project, onDelete }: Props) {
       <div className="mt-4 flex">
         <input
           type="text"
-          value={newTaskName}
+          value={newTaskName || ''} 
           onChange={(e) => setNewTaskName(e.target.value)}
           placeholder="New task name"
           className="border border-gray-300 dark:border-gray-600 rounded-md p-2 flex-grow focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-400 dark:focus:border-indigo-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
@@ -94,12 +73,12 @@ export default function Project({ project, onDelete }: Props) {
 
       {/* Listar tarefas */}
       <ul className="mt-4 space-y-2">
-        {tasks.map((task) => (
+        {tasks?.map((task) => (
           <Task
             key={task.id}
+            projectId={project.id}
             task={task}
-            onRemove={() => handleRemoveTask(task.id)}
-            onToggleStatus={() => handleToggleTaskStatus(task.id, task.completed)}
+            onTaskRemoved={handleTaskRemoved}
           />
         ))}
       </ul>
