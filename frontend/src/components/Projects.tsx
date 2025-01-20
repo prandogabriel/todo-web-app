@@ -5,17 +5,7 @@ import ThemeToggle from './ThemeToggle';
 import api from '../services/api';
 import { authService } from '../services/authService';
 import Project from './Project';
-
-type ProjectType = {
-  id: string;
-  name: string;
-  tasks: TaskType[];
-};
-
-type TaskType = {
-  id: string;
-  name: string;
-};
+import { ProjectType } from './types';
 
 export default function Projects() {
   const [projects, setProjects] = useState<ProjectType[]>([]);

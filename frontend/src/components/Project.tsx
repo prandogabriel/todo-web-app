@@ -2,18 +2,7 @@ import React, { useState } from 'react';
 import { Trash2, Plus } from 'lucide-react';
 import Task from './Task';
 import api from '../services/api';
-
-type TaskType = {
-  id: string;
-  name: string;
-  completed: boolean;
-};
-
-type ProjectType = {
-  id: string;
-  name: string;
-  tasks: TaskType[];
-};
+import { ProjectType, TaskType } from './types';
 
 type Props = {
   project: ProjectType;
