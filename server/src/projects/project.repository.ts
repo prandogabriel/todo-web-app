@@ -13,7 +13,11 @@ import { Task } from './entities/task.entity';
 @Injectable()
 export class ProjectsRepository {
   private readonly tableName = 'todo-app';
-  private readonly dynamoDBClient = new DynamoDBClient({ region: 'us-east-1' });
+  private readonly dynamoDBClient = new DynamoDBClient({
+    region: 'us-east-1',
+    endpoint:
+      process.env.ENVIRONMENT === 'local' ? 'http://localhost:8000' : undefined,
+  });
 
   // Create a new project
   async saveProject(project: Project): Promise<void> {

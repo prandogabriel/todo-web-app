@@ -13,7 +13,11 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersRepository {
   private readonly tableName = 'todo-app';
-  private readonly dynamoDBClient = new DynamoDBClient({ region: 'us-east-1' });
+  private readonly dynamoDBClient = new DynamoDBClient({
+    region: 'us-east-1',
+    endpoint:
+      process.env.ENVIRONMENT === 'local' ? 'http://localhost:8000' : undefined,
+  });
 
   async create(user: User): Promise<void> {
     const params = {

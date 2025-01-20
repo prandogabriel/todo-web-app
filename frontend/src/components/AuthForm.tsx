@@ -52,31 +52,24 @@ export default function AuthForm() {
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-colors">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            {mode === 'signin' ? 'Bem vindo'  : 'Criar conta'}
+            {mode === 'signin' ? 'Welcome'  : 'Create account'}
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             {mode === 'signin' ? (
               <>
-                Você não tem conta?{' '}
+                Don't have an account??{' '}
                 <button onClick={() => setMode('signup')} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">
                   Sign up
                 </button>
               </>
-            ) : mode === 'signup' ? (
-              <>
-                Já tem uma conta?{' '}
-                <button onClick={() => setMode('signin')} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">
-                  Sign in
-                </button>
-              </>
             ) : (
               <>
-                Remember your password?{' '}
+                Already have an account?{' '}
                 <button onClick={() => setMode('signin')} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">
                   Sign in
                 </button>
               </>
-            )}
+            ) }
           </p>
         </div>
 
