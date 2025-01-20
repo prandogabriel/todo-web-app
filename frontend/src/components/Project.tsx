@@ -84,19 +84,20 @@ export default function Project({ project, onDelete }: Props) {
       </div>
 
       {/* Adicionar tarefa */}
-      <div className="mt-4 flex">
+      <div className="mt-4 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
         <input
           type="text"
-          value={newTaskName || ''} 
+          value={newTaskName || ''} // Garante que o valor seja sempre uma string
           onChange={(e) => setNewTaskName(e.target.value)}
           placeholder="New task name"
-          className="border border-gray-300 dark:border-gray-600 rounded-md p-2 flex-grow focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-400 dark:focus:border-indigo-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+          className="border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 w-full sm:w-64 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-400 dark:focus:border-indigo-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
         />
         <button
           onClick={handleAddTask}
-          className="ml-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 transition-colors"
+          className="flex items-center justify-center space-x-2 bg-indigo-600 text-white px-5 py-2 rounded-md font-medium hover:bg-indigo-500 transition-colors shadow-md"
         >
-          <Plus size={16} /> Add Task
+          <Plus size={18} className="inline" />
+          <span>Add Task</span>
         </button>
       </div>
 

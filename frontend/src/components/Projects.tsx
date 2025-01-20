@@ -60,6 +60,11 @@ export default function Projects() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center pt-6">
           <ThemeToggle />
+
+          {/* name do user */}
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            Hello {authService.getUserNameFromToken()} 👋 
+          </h1>
           <button
             onClick={handleSignOut}
             className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
@@ -70,21 +75,23 @@ export default function Projects() {
         </div>
 
         {/* Criar novo projeto */}
-        <div className="my-12 text-center">
+        <div className="my-12 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <input
             type="text"
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
             placeholder="New project name"
-            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-64 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-400 dark:focus:border-indigo-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+            className="border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 w-64 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:border-indigo-400 dark:focus:border-indigo-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
           />
           <button
             onClick={handleCreateProject}
-            className="ml-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 transition-colors"
+            className="flex items-center justify-center space-x-2 bg-indigo-600 text-white px-5 py-2 rounded-md font-medium hover:bg-indigo-500 transition-colors shadow-md"
           >
-            <Plus size={16} /> Create Project
+            <Plus size={18} className="inline" />
+            <span>Create Project</span>
           </button>
         </div>
+
 
         {/* Listar projetos */}
         <div className="space-y-8">

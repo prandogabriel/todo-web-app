@@ -20,4 +20,18 @@ export const authService = {
   isAuthenticated(): boolean {
     return !!localStorage.getItem(TOKEN_KEY);
   },
+
+  getUserNameFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const [, payload] = token.split('.');
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload.name || "annonymous";
+    } catch (error) {
+      console.error('Failed to parse token:', error);
+      return null;
+    }
+  },
 };
